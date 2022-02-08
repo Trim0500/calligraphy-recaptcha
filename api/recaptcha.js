@@ -18,8 +18,10 @@ router.get('/', async (req, res) => {
 router.post('/', async function(req, res) {
     try {
         let response = req.body.token;
-        let secret = !process.env.NODE_ENV || process.env.NODE_ENV === 'development' ? process.env.REACT_APP_RECAPTCHA_SERVER_KEY_LOCAL : process.env.REACT_APP_RECAPTCHA_SERVER_KEY;
+        let secret = process.env.REACT_APP_RECAPTCHA_SERVER_KEY;
         let api = 'https://www.google.com/recaptcha/api/siteverify?secret=' + secret + '&response=' + response
+
+        console.log(api);
 
         request(api, function(error, response, body){
             if(error) {
@@ -27,6 +29,7 @@ router.post('/', async function(req, res) {
             }
             else {
                 res.statusCode = 200;
+                console.log(body);
                 res.send(body);
             }
         });
